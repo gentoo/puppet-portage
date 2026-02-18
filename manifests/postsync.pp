@@ -23,11 +23,6 @@
 #       content => "#!/bin/sh\necho -e \"\\a\""
 #     }
 #
-#     portage::postsync { 'regen-layman-cache':
-#       ensure => present,
-#       source => 'puppet:///modules/site-files/regen-layman-cache.sh',
-#     }
-#
 # == See Also
 #
 # * portage-utils: http://www.gentoo.org/doc/en/portage-utils.xml

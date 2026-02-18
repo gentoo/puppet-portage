@@ -17,11 +17,6 @@ class portage::params {
   $eix_keywords                   = undef
   $eix_keywords_version           = undef
   $eix_use                        = undef
-  $layman_ensure                  = absent
-  $layman_keywords                = undef
-  $layman_keywords_version        = undef
-  $layman_use                     = undef
-  $layman_make_conf               = '/var/lib/layman/make.conf'
   $webapp_config_ensure           = absent
   $webapp_config_keywords         = undef
   $webapp_config_keywords_version = undef

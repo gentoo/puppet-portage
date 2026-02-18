@@ -18,25 +18,6 @@ class portage::install {
     target           => 'portage',
   }
 
-  portage::package { 'app-portage/layman':
-    ensure           => $portage::layman_ensure,
-    keywords         => $portage::layman_keywords,
-    keywords_version => $portage::layman_keywords_version,
-    use              => $portage::layman_use,
-    target           => 'portage',
-    notify           => Portage::Makeconf["source ${portage::layman_make_conf}"],
-  }
-
-  $layman_makeconf_ensure = $portage::layman_ensure ? {
-    'absent' => 'absent',
-    'purged' => 'absent',
-    default  => 'present',
-  }
-
-  portage::makeconf { "source ${portage::layman_make_conf}":
-    ensure => $layman_makeconf_ensure,
-  }
-
   portage::package { 'app-admin/webapp-config':
     ensure           => $portage::webapp_config_ensure,
     keywords         => $portage::webapp_config_keywords,

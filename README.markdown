@@ -71,20 +71,12 @@ If you want to change it, you should do the following:
 
 In order to add entries to `make.conf`:
 
-    portage::makeconf { 'portdir_overlay':
-      content => '/var/lib/layman',
-      ensure  => present,
-    }
     portage::makeconf { 'use':
       content => ['flag1', 'flag2'],
       ensure  => present,
     }
 
 Changes in make.conf will also trigger re-emerge of the affected packages. You can disable this behaviour by setting `make_conf_remerge` to `false`.
-
-You can also specify special content:
-
-    portage::makeconf { 'source /var/lib/layman/make.conf': }
 
 ## portage::package
 
@@ -149,21 +141,6 @@ The `webapp` type/provider can be used to manage webapps via `webapp-config`.
       user       => 'nginx',
       group      => 'nginx',
       secure     => 'yes',
-    }
-
-## layman
-
-The `layman` type/provider can be used to manage overlays via `layman`.
-
-    layman { 'x11':
-      ensure => present,
-    }
-
-Custom overlay list can be used via `overlay_list` parameter.
-
-    layman { 'custom-overlay':
-      ensure => present,
-      overlay_list => 'https://some.xml.file.somethere',
     }
 
 ## Installation of Gentoo tools
