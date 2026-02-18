@@ -57,7 +57,7 @@ class portage (
   include portage::install
 
   file { [
-    '/etc/portage/package.keywords',
+    '/etc/portage/package.accept_keywords',
     '/etc/portage/package.mask',
     '/etc/portage/package.unmask',
     '/etc/portage/package.use',

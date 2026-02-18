@@ -4,7 +4,7 @@ require 'puppet/util/portage'
 
 Puppet::Type.type(:package_keywords).provide(:parsed,
   :parent => Puppet::Provider::PortageFile,
-  :default_target => "/etc/portage/package.keywords/default",
+  :default_target => "/etc/portage/package.accept_keywords/default",
   :filetype => :flat
 ) do
 

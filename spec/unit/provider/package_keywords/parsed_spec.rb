@@ -7,8 +7,8 @@ describe Puppet::Type.type(:package_keywords).provider(:parsed) do
     @default_target = described_class.default_target
   end
 
-  it "should have a default target of /etc/portage/package.keywords/default" do
-    described_class.default_target.should == "/etc/portage/package.keywords/default"
+  it "should have a default target of /etc/portage/package.accept_keywords/default" do
+    described_class.default_target.should == "/etc/portage/package.accept_keywords/default"
   end
 
   describe "when parsing" do
@@ -47,7 +47,7 @@ describe Puppet::Type.type(:package_keywords).provider(:parsed) do
   describe "when flushing" do
     before :each do
       @ramfile = Puppet::Util::FileType::FileTypeRam.new(@default_target)
-      File.stubs(:exist?).with('/etc/portage/package.keywords').returns(true)
+      File.stubs(:exist?).with('/etc/portage/package.accept_keywords').returns(true)
       described_class.any_instance.stubs(:target_object).returns(@ramfile)
 
       resource = Puppet::Type::Package_keywords.new(:name => 'app-admin/tree', :ensure => :present)

@@ -46,11 +46,11 @@ describe Puppet::Type.type(:package_keywords) do
 
   describe "when validating the target property" do
     it "should default to the provider's default target" do
-      described_class.new(:name => "sys-devel/gcc").should(:target).should == "/etc/portage/package.keywords/defaulttarget"
+      described_class.new(:name => "sys-devel/gcc").should(:target).should == "/etc/portage/package.accept_keywords/defaulttarget"
     end
 
     it "should munge targets that do not specify a fully qualified path" do
-      described_class.new(:name => "sys-devel/gcc", :target => "gcc").should(:target).should == "/etc/portage/package.keywords/gcc"
+      described_class.new(:name => "sys-devel/gcc", :target => "gcc").should(:target).should == "/etc/portage/package.accept_keywords/gcc"
     end
 
     it "should not munge fully qualified targets" do

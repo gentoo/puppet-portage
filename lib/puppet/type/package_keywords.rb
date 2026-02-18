@@ -74,7 +74,7 @@ Puppet::Type.newtype(:package_keywords) do
     # Allow us to not have to specify an absolute path unless we really want to
     munge do |value|
       if !value.match(/\//)
-        value = "/etc/portage/package.keywords/" + value
+        value = "/etc/portage/package.accept_keywords/" + value
       end
       value
     end
