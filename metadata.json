@@ -8,6 +8,15 @@
   "project_page": "https://github.com/gentoo/puppet-portage",
   "issues_url": "https://github.com/gentoo/puppet-portage/issues",
   "dependencies": [
-    {"name":"puppetlabs/concat","version_requirement":">= 1.0.0 < 2.0.0"}
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 8.0 < 9.0.0"
+    }
   ]
 }
