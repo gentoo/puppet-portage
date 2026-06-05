@@ -304,21 +304,4 @@ define portage::package (
     ensure => $ensure,
   }
 
-  if($removing) {
-    exec { "emerge deselect ${atom}":
-      command => "${_emerge_command} --deselect ${atom}",
-      timeout => 43200,
-      # Emerge inherits the path, so it must be valid.
-      path    => ['/usr/local/sbin','/usr/local/bin',
-                  '/usr/sbin','/usr/bin','/sbin','/bin'],
-    }
-  } else {
-    exec { "emerge noreplace ${atom}":
-      command => "${_emerge_command} --selective=y --noreplace ${atom}",
-      timeout => 43200,
-      # Emerge inherits the path, so it must be valid.
-      path    => ['/usr/local/sbin','/usr/local/bin',
-                  '/usr/sbin','/usr/bin','/sbin','/bin'],
-    }
-  }
 }
