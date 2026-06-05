@@ -221,7 +221,7 @@ define portage::package (
       path    => ['/usr/local/sbin','/usr/local/bin',
                   '/usr/sbin','/usr/bin','/sbin','/bin'],
     }
-  else {
+  } else {
     exec { "emerge noreplace ${atom}":
       command => "${_emerge_command} --noreplace ${atom}",
       timeout => 43200,
