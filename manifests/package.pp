@@ -300,6 +300,24 @@ define portage::package (
                     '/usr/sbin','/usr/bin','/sbin','/bin'],
   }
 
+  if($removing) {
+    exec { "emerge deselect ${atom}":
+      command => "${_emerge_command} --deselect ${atom}",
+      timeout => 43200,
+      # Emerge inherits the path, so it must be valid.
+      path    => ['/usr/local/sbin','/usr/local/bin',
+                  '/usr/sbin','/usr/bin','/sbin','/bin'],
+    }
+  else {
+    exec { "emerge noreplace ${atom}":
+      command => "${_emerge_command} --noreplace ${atom}",
+      timeout => 43200,
+      # Emerge inherits the path, so it must be valid.
+      path    => ['/usr/local/sbin','/usr/local/bin',
+                  '/usr/sbin','/usr/bin','/sbin','/bin'],
+    }
+  }
+
   package { $name:
     ensure => $ensure,
   }
