@@ -300,6 +300,10 @@ define portage::package (
                     '/usr/sbin','/usr/bin','/sbin','/bin'],
   }
 
+  package { $name:
+    ensure => $ensure,
+  }
+
   if($removing) {
     exec { "emerge deselect ${atom}":
       command => "${_emerge_command} --deselect ${atom}",
@@ -317,9 +321,4 @@ define portage::package (
                   '/usr/sbin','/usr/bin','/sbin','/bin'],
     }
   }
-
-  package { $name:
-    ensure => $ensure,
-  }
-
 }
