@@ -18,7 +18,7 @@
 
 ### Resource types
 
-* [`eselect`](#eselect): The name of the eselect module.
+* [`eselect`](#eselect): Manages eselect modules on Gentoo systems.
 * [`package_accept_keywords`](#package_accept_keywords): Set accept_keywords for a package.  package_accept_keywords { 'app-admin/puppet':   accept_keywords  => ['~x86', '-hppa'],   target  => 'pupp
 * [`package_env`](#package_env): Set environment variables for a package.  package_env { 'dev-libs/boost':   env    => ['no-distcc', 'single-build-thread'],   target => 'boos
 * [`package_keywords`](#package_keywords): Set keywords for a package.  package_keywords { 'app-admin/puppet':   keywords  => ['~x86', '-hppa'],   target  => 'puppet', }
@@ -673,7 +673,19 @@ Default value: `undef`
 
 ### <a name="eselect"></a>`eselect`
 
-The name of the eselect module.
+This type provides Puppet with the capability to manage `eselect`
+modules, allowing you to set the active value for a given module
+(e.g. `editor`, `profile`, `java-vm`, `php::cli`).
+
+#### Examples
+
+##### 
+
+```puppet
+eselect { 'editor':
+  set => 'vim',
+}
+```
 
 #### Properties
 
@@ -681,7 +693,9 @@ The following properties are available in the `eselect` type.
 
 ##### `set`
 
-The value of the eselect module.
+Data type: `String`
+
+The value to set as active for this eselect module.
 
 #### Parameters
 
@@ -694,7 +708,9 @@ The following parameters are available in the `eselect` type.
 
 namevar
 
-The name of the eselect module.
+Data type: `String`
+
+The name of the eselect module to manage (e.g. `editor`, `profile`, `java-vm`).
 
 ##### <a name="-eselect--provider"></a>`provider`
 
