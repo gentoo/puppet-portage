@@ -24,7 +24,7 @@
 #       content => '-X ldap ruby',
 #     }
 
-define portage::makeconf(
+define portage::makeconf (
   $ensure = present,
   $content = undef,
   $order   = undef,
@@ -33,9 +33,9 @@ define portage::makeconf(
 
   if($ensure == 'present') {
     concat::fragment { $name:
-        content => template('portage/makeconf.conf.erb'),
-        target  => $portage::make_conf,
-        order   => $order,
+      content => template('portage/makeconf.conf.erb'),
+      target  => $portage::make_conf,
+      order   => $order,
     }
   }
 }

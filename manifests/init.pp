@@ -48,17 +48,16 @@ class portage (
   $portage_utils_use              = $portage::params::portage_utils_use,
   $emerge_command                 = $portage::params::emerge_command,
 ) inherits portage::params {
-
   include portage::install
 
   file { [
-    '/etc/portage/package.accept_keywords',
-    '/etc/portage/package.mask',
-    '/etc/portage/package.unmask',
-    '/etc/portage/package.use',
-    '/etc/portage/postsync.d',
-  ]:
-    ensure => directory;
+      '/etc/portage/package.accept_keywords',
+      '/etc/portage/package.mask',
+      '/etc/portage/package.unmask',
+      '/etc/portage/package.use',
+      '/etc/portage/postsync.d',
+    ]:
+      ensure => directory;
   }
 
   if $manage_make_conf {
@@ -68,7 +67,7 @@ class portage (
       timeout     => 43200,
       provider    => shell,
       path        => ['/usr/local/sbin','/usr/local/bin',
-                      '/usr/sbin','/usr/bin','/sbin','/bin'],
+      '/usr/sbin','/usr/bin','/sbin','/bin'],
     }
 
     concat { $make_conf:

@@ -1,5 +1,4 @@
 class portage::install {
-
   include portage
 
   portage::package { 'sys-apps/portage':
@@ -41,5 +40,4 @@ class portage::install {
     use              => $portage::portage_utils_use,
     target           => 'portage',
   }
-
 }

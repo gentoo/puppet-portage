@@ -31,7 +31,6 @@ define portage::postsync (
   $content = undef,
   $source  = undef,
 ) {
-
   include portage
 
   if ($content and $source) or (!$content and !$source) {
@@ -46,5 +45,4 @@ define portage::postsync (
     group   => 'root',
     mode    => '0755',
   }
-
 }

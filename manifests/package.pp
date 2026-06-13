@@ -103,29 +103,25 @@
 #  * `puppet describe package_unmask`
 #
 define portage::package (
-  $ensure           = undef,
-  $use              = undef,
-  $use_version      = undef,
-  $use_slot         = undef,
-  $keywords         = undef,
-  $keywords_version = undef,
-  $keywords_slot    = undef,
-  $accept_keywords         = undef,
+  $ensure = undef,
+  $use = undef,
+  $use_version = undef,
+  $use_slot = undef,
+  $accept_keywords = undef,
   $accept_keywords_version = undef,
-  $accept_keywords_slot    = undef,
-  $mask_version     = undef,
-  $mask_slot        = undef,
-  $unmask_version   = undef,
-  $unmask_slot      = undef,
-  $target           = undef,
-  $use_target       = undef,
-  $keywords_target  = undef,
-  $accept_keywords_target  = undef,
-  $mask_target      = undef,
-  $unmask_target    = undef,
-  $emerge_command   = undef,
+  $accept_keywords_slot = undef,
+  $mask_version = undef,
+  $mask_slot = undef,
+  $unmask_version = undef,
+  $unmask_slot = undef,
+  $target = undef,
+  $use_target = undef,
+  $keywords_target = undef,
+  $accept_keywords_target = undef,
+  $mask_target = undef,
+  $unmask_target = undef,
+  $emerge_command = undef,
 ) {
-
   include portage::params
   if(defined('$portage::emerge_command')) {
     $_portage_emerge_command = $portage::emerge_command
@@ -197,28 +193,6 @@ define portage::package (
     }
   }
 
-  if(!$removing and ($keywords or $keywords_version)) {
-    if $keywords == 'all' {
-      $assigned_keywords = undef
-    }
-    else {
-      $assigned_keywords = $keywords
-    }
-    package_keywords { $name:
-      keywords => $assigned_keywords,
-      version  => $keywords_version,
-      slot     => $keywords_slot,
-      target   => $assigned_keywords_target,
-      notify   => [Exec["rebuild_${atom}"], Package[$name]],
-    }
-  }
-  else {
-    package_keywords { $name:
-      ensure => absent,
-      target => $assigned_keywords_target,
-      notify => [Exec["rebuild_${atom}"], Package[$name]],
-    }
-  }
   if(!$removing and ($accept_keywords or $accept_keywords_version)) {
     if $accept_keywords == 'all' {
       $assigned_accept_keywords = undef
@@ -297,11 +271,10 @@ define portage::package (
     timeout     => 43200,
     # Emerge inherits the path, so it must be valid.
     path        => ['/usr/local/sbin','/usr/local/bin',
-                    '/usr/sbin','/usr/bin','/sbin','/bin'],
+    '/usr/sbin','/usr/bin','/sbin','/bin'],
   }
 
   package { $name:
     ensure => $ensure,
   }
-
 }
