@@ -21,7 +21,6 @@
 * [`eselect`](#eselect): Manages eselect modules on Gentoo systems.
 * [`package_accept_keywords`](#package_accept_keywords): Set accept_keywords for a package.  package_accept_keywords { 'app-admin/puppet':   accept_keywords  => ['~x86', '-hppa'],   target  => 'pupp
 * [`package_env`](#package_env): Set environment variables for a package.  package_env { 'dev-libs/boost':   env    => ['no-distcc', 'single-build-thread'],   target => 'boos
-* [`package_keywords`](#package_keywords): Set keywords for a package.  package_keywords { 'app-admin/puppet':   keywords  => ['~x86', '-hppa'],   target  => 'puppet', }
 * [`package_mask`](#package_mask): Mask packages in portage.  package_mask { 'app-admin/chef':   target  => 'chef', }
 * [`package_unmask`](#package_unmask): Unmask packages in portage.  package_unmask { 'app-admin/puppet-2.7.1':   target  => 'puppet', }
 * [`package_use`](#package_use): Set use flags for a package.  package_use { 'app-admin/puppet':   use    => ['augeas', '-rrdtool'],   target => 'puppet', }
@@ -420,9 +419,6 @@ The following parameters are available in the `portage::package` defined type:
 * [`use`](#-portage--package--use)
 * [`use_version`](#-portage--package--use_version)
 * [`use_slot`](#-portage--package--use_slot)
-* [`keywords`](#-portage--package--keywords)
-* [`keywords_version`](#-portage--package--keywords_version)
-* [`keywords_slot`](#-portage--package--keywords_slot)
 * [`accept_keywords`](#-portage--package--accept_keywords)
 * [`accept_keywords_version`](#-portage--package--accept_keywords_version)
 * [`accept_keywords_slot`](#-portage--package--accept_keywords_slot)
@@ -463,30 +459,6 @@ Data type: `Any`
 Default value: `undef`
 
 ##### <a name="-portage--package--use_slot"></a>`use_slot`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--keywords"></a>`keywords`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--keywords_version"></a>`keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--keywords_slot"></a>`keywords_slot`
 
 Data type: `Any`
 
@@ -827,62 +799,6 @@ namevar
 ##### <a name="-package_env--provider"></a>`provider`
 
 The specific backend to use for this `package_env` resource. You will seldom need to specify this --- Puppet will
-usually discover the appropriate provider for your platform.
-
-### <a name="package_keywords"></a>`package_keywords`
-
-Set keywords for a package.
-
-package_keywords { 'app-admin/puppet':
-  keywords  => ['~x86', '-hppa'],
-  target  => 'puppet',
-}
-
-#### Properties
-
-The following properties are available in the `package_keywords` type.
-
-##### `ensure`
-
-Valid values: `present`, `absent`
-
-The basic property that the resource should be in.
-
-Default value: `present`
-
-##### `keywords`
-
-The keywords(s) to use
-
-Default value: `[]`
-
-##### `slot`
-
-
-
-##### `target`
-
-The location of the package.keywords file
-
-##### `version`
-
-
-
-#### Parameters
-
-The following parameters are available in the `package_keywords` type.
-
-* [`name`](#-package_keywords--name)
-* [`provider`](#-package_keywords--provider)
-
-##### <a name="-package_keywords--name"></a>`name`
-
-namevar
-
-
-##### <a name="-package_keywords--provider"></a>`provider`
-
-The specific backend to use for this `package_keywords` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
 ### <a name="package_mask"></a>`package_mask`
