@@ -1,135 +1,103 @@
-# = Define: portage::package
+# @summary
+#   Configures and install portage backed packages
 #
-# Configures and install portage backed packages
+# @param ensure
+#   The ensure value of the package.
 #
-# == Parameters
+# @param use
+#   Use flags for the package.
 #
-# [*ensure*]
+# @param keywords
+#   Portage keywords for the package.
 #
-# The ensure value of the package.
+# @param accept_keywords
+#   Portage accept_keywords for the package.
 #
-# [*use*]
+# @param target
+#   A default value for package.* targets
 #
-# Use flags for the package.
+# @param use_target
+#   An optional custom target for package use flags
 #
-# [*keywords*]
+# @param keywords_target
+#   An optional custom target for package keywords
 #
-# Portage keywords for the package.
+# @param accept_keywords_target
+#   An optional custom target for package accept_keywords
 #
-# [*accept_keywords*]
+# @param mask_target
+#   An optional custom target for package masks
 #
-# Portage accept_keywords for the package.
+# @param unmask_target
+#   An optional custom target for package unmasks
 #
-# [*target*]
+# @param use_version
+#   An optional version specification for package use
 #
-# A default value for package.* targets
+# @param use_slot
+#   An optional slot specification for package use
 #
-# [*use_target*]
+# @param keywords_version
+#   An optional version specification for package keywords
 #
-# An optional custom target for package use flags
+# @param keywords_slot
+#   An optional slot specification for package keywords
 #
-# [*keywords_target*]
+# @param accept_keywords_version
+#   An optional version specification for package accept_keywords
 #
-# An optional custom target for package keywords
+# @param accept_keywords_slot
+#   An optional slot specification for package accept_keywords
 #
-# [*accept_keywords_target*]
+# @param mask_version
+#   An optional version specification for package mask
 #
-# An optional custom target for package accept_keywords
+# @param mask_slot
+#   An optional slot specification for package mask
 #
-# [*mask_target*]
+# @param unmask_version
+#   An optional version specification for package unmask
 #
-# An optional custom target for package masks
+# @param unmask_slot
+#   An optional slot specification for package unmask
 #
-# [*unmask_target*]
+# @example
+#   portage::package { 'app-admin/puppet':
+#     ensure       => '3.0.1',
+#     use          => ['augeas', '-rrdtool'],
+#     accept_keywords     => '~amd64',
+#     target       => 'puppet',
+#     mask_version => '<=2.7.18',
+#   }
 #
-# An optional custom target for package unmasks
-#
-# [*use_version*]
-#
-# An optional version specification for package use
-#
-# [*use_slot*]
-#
-# An optional slot specification for package use
-#
-# [*keywords_version*]
-#
-# An optional version specification for package keywords
-#
-# [*keywords_slot*]
-#
-# An optional slot specification for package keywords
-#
-# [*accept_keywords_version*]
-#
-# An optional version specification for package accept_keywords
-#
-# [*accept_keywords_slot*]
-#
-# An optional slot specification for package accept_keywords
-#
-# [*mask_version*]
-#
-# An optional version specification for package mask
-#
-# [*mask_slot*]
-#
-# An optional slot specification for package mask
-#
-# [*unmask_version*]
-#
-# An optional version specification for package unmask
-#
-# [*unmask_slot*]
-#
-# An optional slot specification for package unmask
-#
-# == Example
-#
-#     portage::package { 'app-admin/puppet':
-#       ensure       => '3.0.1',
-#       use          => ['augeas', '-rrdtool'],
-#       accept_keywords     => '~amd64',
-#       target       => 'puppet',
-#       mask_version => '<=2.7.18',
-#     }
-#
-# == See Also
-#
-#  * `puppet describe package_use`
-#  * `puppet describe package_keywords`
-#  * `puppet describe package_accept_keywords`
-#  * `puppet describe package_mask`
-#  * `puppet describe package_unmask`
+# @see `puppet describe package_use`
+# @see `puppet describe package_keywords`
+# @see `puppet describe package_accept_keywords`
+# @see `puppet describe package_mask`
+# @see `puppet describe package_unmask`
 #
 define portage::package (
-  $ensure = undef,
-  $use = undef,
-  $use_version = undef,
-  $use_slot = undef,
-  $accept_keywords = undef,
-  $accept_keywords_version = undef,
-  $accept_keywords_slot = undef,
-  $mask_version = undef,
-  $mask_slot = undef,
-  $unmask_version = undef,
-  $unmask_slot = undef,
-  $target = undef,
-  $use_target = undef,
-  $keywords_target = undef,
-  $accept_keywords_target = undef,
-  $mask_target = undef,
-  $unmask_target = undef,
-  $emerge_command = undef,
+  Stdlib::Ensure::Package $ensure = 'present',
+  Optional[String] $target = undef,
+
+  Optional[Array[Pattern[/\A\S+\z/]]] $use = undef,
+  Optional[String] $use_version = undef,
+  Optional[String] $use_slot = undef,
+  Optional[String] $use_target = undef,
+
+  Optional[Array[Pattern[/\A\S+\z/]]] $accept_keywords = undef,
+  Optional[String] $accept_keywords_version = undef,
+  Optional[String] $accept_keywords_slot = undef,
+  Optional[String] $accept_keywords_target = undef,
+
+  Optional[String] $mask_version = undef,
+  Optional[String] $mask_slot = undef,
+  Optional[String] $mask_target = undef,
+
+  Optional[String] $unmask_version = undef,
+  Optional[String] $unmask_slot = undef,
+  Optional[String] $unmask_target = undef,
 ) {
-  include portage::params
-  if(defined('$portage::emerge_command')) {
-    $_portage_emerge_command = $portage::emerge_command
-  } else {
-    $_portage_emerge_command = undef
-  }
-  $_emerge_command = pick($emerge_command, $_portage_emerge_command, $portage::params::emerge_command)
-  assert_type(Stdlib::Unixpath, $_emerge_command) # emerge_command must start with an absolute path
   $atom = $ensure ? {
     /(present|absent|purged|held|installed|latest)/ => $name,
     /./ => "=${name}-${ensure}",
@@ -141,40 +109,10 @@ define portage::package (
     default => false,
   }
 
-  if $use_target {
-    $assigned_use_target = $use_target
-  }
-  else {
-    $assigned_use_target = $target
-  }
-
-  if $keywords_target {
-    $assigned_keywords_target = $keywords_target
-  }
-  else {
-    $assigned_keywords_target = $target
-  }
-
-  if $accept_keywords_target {
-    $assigned_accept_keywords_target = $accept_keywords_target
-  }
-  else {
-    $assigned_accept_keywords_target = $target
-  }
-
-  if $mask_target {
-    $assigned_mask_target = $mask_target
-  }
-  else {
-    $assigned_mask_target = $target
-  }
-
-  if $unmask_target {
-    $assigned_unmask_target = $unmask_target
-  }
-  else {
-    $assigned_unmask_target = $target
-  }
+  $assigned_use_target = pick($use_target, $target)
+  $assigned_accept_keywords_target = pick($accept_keywords_target, $target)
+  $assigned_mask_target = pick($mask_target, $target)
+  $assigned_unmask_target = pick($unmask_target, $target)
 
   if($use and !$removing) {
     package_use { $name:
@@ -262,9 +200,10 @@ define portage::package (
 
   $rebuild_command = $removing ? {
     true  => '/bin/true',
-    false => "${_emerge_command} --changed-use -u1 ${atom}",
+    false => "${portage::emerge_command} --changed-use -u1 ${atom}",
     default  => '/bin/false Should-Not-Trigger', # This should not happen.
   }
+
   exec { "rebuild_${atom}":
     command     => $rebuild_command,
     refreshonly => true,

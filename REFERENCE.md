@@ -9,12 +9,11 @@
 * [`portage`](#portage): Configure the Portage package management system
 * [`portage::install`](#portage--install): Installs and configures the core Portage userland tools (portage, eix,
 webapp-config, eselect, and portage-utils).
-* [`portage::params`](#portage--params): = Class: portage::params  Contains default values for portage.  == Example  This class does not need to be directly included.
 
 ### Defined types
 
 * [`portage::makeconf`](#portage--makeconf): Manages a fragment of Gentoo's make.conf via concat.
-* [`portage::package`](#portage--package): = Define: portage::package  Configures and install portage backed packages  == Parameters  [*ensure*]  The ensure value of the package.  [*us
+* [`portage::package`](#portage--package): Configures and install portage backed packages
 * [`portage::postsync`](#portage--postsync): Installs a custom Portage postsync script.
 
 ### Resource types
@@ -271,16 +270,6 @@ Version `$portage_utils_accept_keywords` applies to. Unset applies to all versio
 
 Default value: `undef`
 
-### <a name="portage--params"></a>`portage::params`
-
-= Class: portage::params
-
-Contains default values for portage.
-
-== Example
-
-This class does not need to be directly included.
-
 ## Defined types
 
 ### <a name="portage--makeconf"></a>`portage::makeconf`
@@ -333,109 +322,33 @@ Default value: `undef`
 
 ### <a name="portage--package"></a>`portage::package`
 
-= Define: portage::package
-
 Configures and install portage backed packages
 
-== Parameters
+* **See also**
+  * `puppet
+    * describe package_use`
+  * `puppet
+    * describe package_keywords`
+  * `puppet
+    * describe package_accept_keywords`
+  * `puppet
+    * describe package_mask`
+  * `puppet
+    * describe package_unmask`
 
-[*ensure*]
+#### Examples
 
-The ensure value of the package.
+##### 
 
-[*use*]
-
-Use flags for the package.
-
-[*keywords*]
-
-Portage keywords for the package.
-
-[*accept_keywords*]
-
-Portage accept_keywords for the package.
-
-[*target*]
-
-A default value for package.* targets
-
-[*use_target*]
-
-An optional custom target for package use flags
-
-[*keywords_target*]
-
-An optional custom target for package keywords
-
-[*accept_keywords_target*]
-
-An optional custom target for package accept_keywords
-
-[*mask_target*]
-
-An optional custom target for package masks
-
-[*unmask_target*]
-
-An optional custom target for package unmasks
-
-[*use_version*]
-
-An optional version specification for package use
-
-[*use_slot*]
-
-An optional slot specification for package use
-
-[*keywords_version*]
-
-An optional version specification for package keywords
-
-[*keywords_slot*]
-
-An optional slot specification for package keywords
-
-[*accept_keywords_version*]
-
-An optional version specification for package accept_keywords
-
-[*accept_keywords_slot*]
-
-An optional slot specification for package accept_keywords
-
-[*mask_version*]
-
-An optional version specification for package mask
-
-[*mask_slot*]
-
-An optional slot specification for package mask
-
-[*unmask_version*]
-
-An optional version specification for package unmask
-
-[*unmask_slot*]
-
-An optional slot specification for package unmask
-
-== Example
-
-    portage::package { 'app-admin/puppet':
-      ensure       => '3.0.1',
-      use          => ['augeas', '-rrdtool'],
-      accept_keywords     => '~amd64',
-      target       => 'puppet',
-      mask_version => '<=2.7.18',
-    }
-
-== See Also
-
- * `puppet describe package_use`
- * `puppet describe package_keywords`
- * `puppet describe package_accept_keywords`
- * `puppet describe package_mask`
- * `puppet describe package_unmask`
+```puppet
+portage::package { 'app-admin/puppet':
+  ensure       => '3.0.1',
+  use          => ['augeas', '-rrdtool'],
+  accept_keywords     => '~amd64',
+  target       => 'puppet',
+  mask_version => '<=2.7.18',
+}
+```
 
 #### Parameters
 
@@ -443,164 +356,166 @@ The following parameters are available in the `portage::package` defined type:
 
 * [`ensure`](#-portage--package--ensure)
 * [`use`](#-portage--package--use)
-* [`use_version`](#-portage--package--use_version)
-* [`use_slot`](#-portage--package--use_slot)
+* [`keywords`](#-portage--package--keywords)
 * [`accept_keywords`](#-portage--package--accept_keywords)
-* [`accept_keywords_version`](#-portage--package--accept_keywords_version)
-* [`accept_keywords_slot`](#-portage--package--accept_keywords_slot)
-* [`mask_version`](#-portage--package--mask_version)
-* [`mask_slot`](#-portage--package--mask_slot)
-* [`unmask_version`](#-portage--package--unmask_version)
-* [`unmask_slot`](#-portage--package--unmask_slot)
 * [`target`](#-portage--package--target)
 * [`use_target`](#-portage--package--use_target)
 * [`keywords_target`](#-portage--package--keywords_target)
 * [`accept_keywords_target`](#-portage--package--accept_keywords_target)
 * [`mask_target`](#-portage--package--mask_target)
 * [`unmask_target`](#-portage--package--unmask_target)
-* [`emerge_command`](#-portage--package--emerge_command)
+* [`use_version`](#-portage--package--use_version)
+* [`use_slot`](#-portage--package--use_slot)
+* [`keywords_version`](#-portage--package--keywords_version)
+* [`keywords_slot`](#-portage--package--keywords_slot)
+* [`accept_keywords_version`](#-portage--package--accept_keywords_version)
+* [`accept_keywords_slot`](#-portage--package--accept_keywords_slot)
+* [`mask_version`](#-portage--package--mask_version)
+* [`mask_slot`](#-portage--package--mask_slot)
+* [`unmask_version`](#-portage--package--unmask_version)
+* [`unmask_slot`](#-portage--package--unmask_slot)
 
 ##### <a name="-portage--package--ensure"></a>`ensure`
 
-Data type: `Any`
+Data type: `Stdlib::Ensure::Package`
 
+The ensure value of the package.
 
-
-Default value: `undef`
+Default value: `'present'`
 
 ##### <a name="-portage--package--use"></a>`use`
 
-Data type: `Any`
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
 
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--use_version"></a>`use_version`
-
-Data type: `Any`
-
-
+Use flags for the package.
 
 Default value: `undef`
 
-##### <a name="-portage--package--use_slot"></a>`use_slot`
+##### <a name="-portage--package--keywords"></a>`keywords`
 
-Data type: `Any`
-
-
-
-Default value: `undef`
+Portage keywords for the package.
 
 ##### <a name="-portage--package--accept_keywords"></a>`accept_keywords`
 
-Data type: `Any`
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
 
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--accept_keywords_version"></a>`accept_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--accept_keywords_slot"></a>`accept_keywords_slot`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--mask_version"></a>`mask_version`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--mask_slot"></a>`mask_slot`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--unmask_version"></a>`unmask_version`
-
-Data type: `Any`
-
-
-
-Default value: `undef`
-
-##### <a name="-portage--package--unmask_slot"></a>`unmask_slot`
-
-Data type: `Any`
-
-
+Portage accept_keywords for the package.
 
 Default value: `undef`
 
 ##### <a name="-portage--package--target"></a>`target`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+A default value for package.* targets
 
 Default value: `undef`
 
 ##### <a name="-portage--package--use_target"></a>`use_target`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+An optional custom target for package use flags
 
 Default value: `undef`
 
 ##### <a name="-portage--package--keywords_target"></a>`keywords_target`
 
-Data type: `Any`
-
-
-
-Default value: `undef`
+An optional custom target for package keywords
 
 ##### <a name="-portage--package--accept_keywords_target"></a>`accept_keywords_target`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+An optional custom target for package accept_keywords
 
 Default value: `undef`
 
 ##### <a name="-portage--package--mask_target"></a>`mask_target`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+An optional custom target for package masks
 
 Default value: `undef`
 
 ##### <a name="-portage--package--unmask_target"></a>`unmask_target`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+An optional custom target for package unmasks
 
 Default value: `undef`
 
-##### <a name="-portage--package--emerge_command"></a>`emerge_command`
+##### <a name="-portage--package--use_version"></a>`use_version`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
+An optional version specification for package use
 
+Default value: `undef`
+
+##### <a name="-portage--package--use_slot"></a>`use_slot`
+
+Data type: `Optional[String]`
+
+An optional slot specification for package use
+
+Default value: `undef`
+
+##### <a name="-portage--package--keywords_version"></a>`keywords_version`
+
+An optional version specification for package keywords
+
+##### <a name="-portage--package--keywords_slot"></a>`keywords_slot`
+
+An optional slot specification for package keywords
+
+##### <a name="-portage--package--accept_keywords_version"></a>`accept_keywords_version`
+
+Data type: `Optional[String]`
+
+An optional version specification for package accept_keywords
+
+Default value: `undef`
+
+##### <a name="-portage--package--accept_keywords_slot"></a>`accept_keywords_slot`
+
+Data type: `Optional[String]`
+
+An optional slot specification for package accept_keywords
+
+Default value: `undef`
+
+##### <a name="-portage--package--mask_version"></a>`mask_version`
+
+Data type: `Optional[String]`
+
+An optional version specification for package mask
+
+Default value: `undef`
+
+##### <a name="-portage--package--mask_slot"></a>`mask_slot`
+
+Data type: `Optional[String]`
+
+An optional slot specification for package mask
+
+Default value: `undef`
+
+##### <a name="-portage--package--unmask_version"></a>`unmask_version`
+
+Data type: `Optional[String]`
+
+An optional version specification for package unmask
+
+Default value: `undef`
+
+##### <a name="-portage--package--unmask_slot"></a>`unmask_slot`
+
+Data type: `Optional[String]`
+
+An optional slot specification for package unmask
 
 Default value: `undef`
 
