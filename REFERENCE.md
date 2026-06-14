@@ -15,7 +15,7 @@ webapp-config, eselect, and portage-utils).
 
 * [`portage::makeconf`](#portage--makeconf): Manages a fragment of Gentoo's make.conf via concat.
 * [`portage::package`](#portage--package): = Define: portage::package  Configures and install portage backed packages  == Parameters  [*ensure*]  The ensure value of the package.  [*us
-* [`portage::postsync`](#portage--postsync): = Define: portage::postsync  Install custom postsync scripts  == Parameters  [*ensure*]  The ensure value for the scrypt  [*content*]  The co
+* [`portage::postsync`](#portage--postsync): Installs a custom Portage postsync script.
 
 ### Resource types
 
@@ -606,34 +606,31 @@ Default value: `undef`
 
 ### <a name="portage--postsync"></a>`portage::postsync`
 
-= Define: portage::postsync
+Define: portage::postsync
 
-Install custom postsync scripts
+* **See also**
+  * http://www.gentoo.org/doc/en/portage-utils.xml
+    * portage-utils
 
-== Parameters
+#### Examples
 
-[*ensure*]
+##### Install with inline content
 
-The ensure value for the scrypt
+```puppet
+portage::postsync { 'system-bell':
+  ensure  => present,
+  content => "#!/bin/sh\necho -e \"\\a\"",
+}
+```
 
-[*content*]
+##### Install from a source file
 
-The content of the script.
-
-[*source*]
-
-The source path to the script
-
-== Example
-
-    portage::postsync { 'system-bell':
-      ensure  => present,
-      content => "#!/bin/sh\necho -e \"\\a\""
-    }
-
-== See Also
-
-* portage-utils: http://www.gentoo.org/doc/en/portage-utils.xml
+```puppet
+portage::postsync { 'update-eix':
+  ensure => present,
+  source => 'puppet:///modules/portage/postsync/update-eix.sh',
+}
+```
 
 #### Parameters
 
@@ -645,25 +642,25 @@ The following parameters are available in the `portage::postsync` defined type:
 
 ##### <a name="-portage--postsync--ensure"></a>`ensure`
 
-Data type: `Any`
+Data type: `Enum['present', 'absent']`
 
-
+Ensure value for `/etc/portage/postsync.d/${name}`.
 
 Default value: `'present'`
 
 ##### <a name="-portage--postsync--content"></a>`content`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+Script content. Mutually exclusive with `$source`; exactly one required.
 
 Default value: `undef`
 
 ##### <a name="-portage--postsync--source"></a>`source`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+Script source path. Mutually exclusive with `$content`; exactly one required.
 
 Default value: `undef`
 
