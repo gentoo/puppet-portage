@@ -9,6 +9,10 @@
   "issues_url": "https://github.com/gentoo/puppet-portage/issues",
   "dependencies": [
     {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 9.7.0 < 10.0.0"
+    },
+    {
       "name": "puppetlabs/concat",
       "version_requirement": ">= 1.0.0 < 2.0.0"
     }
