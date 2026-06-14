@@ -6,7 +6,7 @@
 
 ### Classes
 
-* [`portage`](#portage)
+* [`portage`](#portage): Configure the Portage package management system
 * [`portage::install`](#portage--install): Installs and configures the core Portage userland tools (portage, eix,
 webapp-config, eselect, and portage-utils).
 * [`portage::params`](#portage--params): = Class: portage::params  Contains default values for portage.  == Example  This class does not need to be directly included.
@@ -31,228 +31,56 @@ webapp-config, eselect, and portage-utils).
 
 ### <a name="portage"></a>`portage`
 
-The portage class.
+Class: portage
+
+* **See also**
+  * emerge(1)
+    * http://dev.gentoo.org/~zmedico/portage/doc/man/emerge.1.html
+  * make.conf(5)
+    * http://dev.gentoo.org/~zmedico/portage/doc/man/make.conf.5.html
 
 #### Parameters
 
 The following parameters are available in the `portage` class:
 
 * [`manage_make_conf`](#-portage--manage_make_conf)
-* [`make_conf`](#-portage--make_conf)
 * [`make_conf_remerge`](#-portage--make_conf_remerge)
-* [`portage_ensure`](#-portage--portage_ensure)
-* [`portage_keywords`](#-portage--portage_keywords)
-* [`portage_keywords_version`](#-portage--portage_keywords_version)
-* [`portage_use`](#-portage--portage_use)
-* [`eix_ensure`](#-portage--eix_ensure)
-* [`eix_keywords`](#-portage--eix_keywords)
-* [`eix_keywords_version`](#-portage--eix_keywords_version)
-* [`eix_use`](#-portage--eix_use)
-* [`webapp_config_ensure`](#-portage--webapp_config_ensure)
-* [`webapp_config_keywords`](#-portage--webapp_config_keywords)
-* [`webapp_config_keywords_version`](#-portage--webapp_config_keywords_version)
-* [`webapp_config_use`](#-portage--webapp_config_use)
-* [`eselect_ensure`](#-portage--eselect_ensure)
-* [`eselect_keywords`](#-portage--eselect_keywords)
-* [`eselect_keywords_version`](#-portage--eselect_keywords_version)
-* [`eselect_use`](#-portage--eselect_use)
-* [`portage_utils_ensure`](#-portage--portage_utils_ensure)
-* [`portage_utils_keywords`](#-portage--portage_utils_keywords)
-* [`portage_utils_keywords_version`](#-portage--portage_utils_keywords_version)
-* [`portage_utils_use`](#-portage--portage_utils_use)
+* [`make_conf`](#-portage--make_conf)
 * [`emerge_command`](#-portage--emerge_command)
 
 ##### <a name="-portage--manage_make_conf"></a>`manage_make_conf`
 
 Data type: `Boolean`
 
+Whether this class should manage `/etc/portage/make.conf` as a `concat`
+resource. Additional fragments can be added separately via `portage::makeconf`.
 
+##### <a name="-portage--make_conf_remerge"></a>`make_conf_remerge`
+
+Data type: `Boolean`
+
+Whether changes to `$make_conf` should trigger a re-emerge of all
+packages with changed USE flags. Only has an effect when
+`$manage_make_conf` is `true`.
 
 Default value: `true`
 
 ##### <a name="-portage--make_conf"></a>`make_conf`
 
-Data type: `Any`
+Data type: `Stdlib::Unixpath`
 
+Absolute path to the Portage make.conf file to manage (typically
+`/etc/portage/make.conf`).
 
-
-Default value: `$portage::params::make_conf`
-
-##### <a name="-portage--make_conf_remerge"></a>`make_conf_remerge`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::make_conf_remerge`
-
-##### <a name="-portage--portage_ensure"></a>`portage_ensure`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_ensure`
-
-##### <a name="-portage--portage_keywords"></a>`portage_keywords`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_keywords`
-
-##### <a name="-portage--portage_keywords_version"></a>`portage_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_keywords_version`
-
-##### <a name="-portage--portage_use"></a>`portage_use`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_use`
-
-##### <a name="-portage--eix_ensure"></a>`eix_ensure`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eix_ensure`
-
-##### <a name="-portage--eix_keywords"></a>`eix_keywords`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eix_keywords`
-
-##### <a name="-portage--eix_keywords_version"></a>`eix_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eix_keywords_version`
-
-##### <a name="-portage--eix_use"></a>`eix_use`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eix_use`
-
-##### <a name="-portage--webapp_config_ensure"></a>`webapp_config_ensure`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::webapp_config_ensure`
-
-##### <a name="-portage--webapp_config_keywords"></a>`webapp_config_keywords`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::webapp_config_keywords`
-
-##### <a name="-portage--webapp_config_keywords_version"></a>`webapp_config_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::webapp_config_keywords_version`
-
-##### <a name="-portage--webapp_config_use"></a>`webapp_config_use`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::webapp_config_use`
-
-##### <a name="-portage--eselect_ensure"></a>`eselect_ensure`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eselect_ensure`
-
-##### <a name="-portage--eselect_keywords"></a>`eselect_keywords`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eselect_keywords`
-
-##### <a name="-portage--eselect_keywords_version"></a>`eselect_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eselect_keywords_version`
-
-##### <a name="-portage--eselect_use"></a>`eselect_use`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::eselect_use`
-
-##### <a name="-portage--portage_utils_ensure"></a>`portage_utils_ensure`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_utils_ensure`
-
-##### <a name="-portage--portage_utils_keywords"></a>`portage_utils_keywords`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_utils_keywords`
-
-##### <a name="-portage--portage_utils_keywords_version"></a>`portage_utils_keywords_version`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_utils_keywords_version`
-
-##### <a name="-portage--portage_utils_use"></a>`portage_utils_use`
-
-Data type: `Any`
-
-
-
-Default value: `$portage::params::portage_utils_use`
+Default value: `'/etc/portage/make.conf'`
 
 ##### <a name="-portage--emerge_command"></a>`emerge_command`
 
-Data type: `Any`
+Data type: `Stdlib::Unixpath`
 
+Absolute path to the `emerge` command.
 
-
-Default value: `$portage::params::emerge_command`
+Default value: `'/usr/bin/emerge'`
 
 ### <a name="portage--install"></a>`portage::install`
 
