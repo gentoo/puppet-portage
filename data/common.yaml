@@ -1,0 +1,5 @@
+portage::install::eix_ensure: installed
+portage::install::eselect_ensure: installed
+portage::install::portage_ensure: installed
+portage::install::portage_utils_ensure: installed
+portage::install::webapp_config_ensure: absent

@@ -7,7 +7,8 @@
 ### Classes
 
 * [`portage`](#portage)
-* [`portage::install`](#portage--install)
+* [`portage::install`](#portage--install): Installs and configures the core Portage userland tools (portage, eix,
+webapp-config, eselect, and portage-utils).
 * [`portage::params`](#portage--params): = Class: portage::params  Contains default values for portage.  == Example  This class does not need to be directly included.
 
 ### Defined types
@@ -255,7 +256,192 @@ Default value: `$portage::params::emerge_command`
 
 ### <a name="portage--install"></a>`portage::install`
 
-The portage::install class.
+Class: portage::install
+
+#### Parameters
+
+The following parameters are available in the `portage::install` class:
+
+* [`portage_ensure`](#-portage--install--portage_ensure)
+* [`eix_ensure`](#-portage--install--eix_ensure)
+* [`webapp_config_ensure`](#-portage--install--webapp_config_ensure)
+* [`eselect_ensure`](#-portage--install--eselect_ensure)
+* [`portage_utils_ensure`](#-portage--install--portage_utils_ensure)
+* [`portage_accept_keywords`](#-portage--install--portage_accept_keywords)
+* [`portage_use`](#-portage--install--portage_use)
+* [`portage_accept_keywords_version`](#-portage--install--portage_accept_keywords_version)
+* [`eix_accept_accept_keywords`](#-portage--install--eix_accept_accept_keywords)
+* [`eix_use`](#-portage--install--eix_use)
+* [`eix_accept_keywords_version`](#-portage--install--eix_accept_keywords_version)
+* [`webapp_config_accept_keywords`](#-portage--install--webapp_config_accept_keywords)
+* [`webapp_config_use`](#-portage--install--webapp_config_use)
+* [`webapp_config_accept_keywords_version`](#-portage--install--webapp_config_accept_keywords_version)
+* [`eselect_accept_keywords`](#-portage--install--eselect_accept_keywords)
+* [`eselect_use`](#-portage--install--eselect_use)
+* [`eselect_accept_keywords_version`](#-portage--install--eselect_accept_keywords_version)
+* [`portage_utils_accept_keywords`](#-portage--install--portage_utils_accept_keywords)
+* [`portage_utils_use`](#-portage--install--portage_utils_use)
+* [`portage_utils_accept_keywords_version`](#-portage--install--portage_utils_accept_keywords_version)
+
+##### <a name="-portage--install--portage_ensure"></a>`portage_ensure`
+
+Data type: `Stdlib::Ensure::Package`
+
+Ensure state for sys-apps/portage.
+
+Default value: `'installed'`
+
+##### <a name="-portage--install--eix_ensure"></a>`eix_ensure`
+
+Data type: `Stdlib::Ensure::Package`
+
+Ensure state for app-portage/eix.
+
+Default value: `'installed'`
+
+##### <a name="-portage--install--webapp_config_ensure"></a>`webapp_config_ensure`
+
+Data type: `Stdlib::Ensure::Package`
+
+Ensure state for app-admin/webapp-config.
+
+Default value: `'absent'`
+
+##### <a name="-portage--install--eselect_ensure"></a>`eselect_ensure`
+
+Data type: `Stdlib::Ensure::Package`
+
+Ensure state for app-admin/eselect.
+
+Default value: `'installed'`
+
+##### <a name="-portage--install--portage_utils_ensure"></a>`portage_utils_ensure`
+
+Data type: `Stdlib::Ensure::Package`
+
+Ensure state for app-portage/portage-utils.
+
+Default value: `'installed'`
+
+##### <a name="-portage--install--portage_accept_keywords"></a>`portage_accept_keywords`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+accept_keywords entries (e.g. `~amd64`) for sys-apps/portage.
+
+Default value: `undef`
+
+##### <a name="-portage--install--portage_use"></a>`portage_use`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+USE flags for sys-apps/portage.
+
+Default value: `undef`
+
+##### <a name="-portage--install--portage_accept_keywords_version"></a>`portage_accept_keywords_version`
+
+Data type: `Optional[String]`
+
+Version `$portage_accept_keywords` applies to. Unset applies to all versions.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eix_accept_accept_keywords"></a>`eix_accept_accept_keywords`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+accept_keywords entries (e.g. `~amd64`) for app-portage/eix.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eix_use"></a>`eix_use`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+USE flags for app-portage/eix.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eix_accept_keywords_version"></a>`eix_accept_keywords_version`
+
+Data type: `Optional[String]`
+
+Version `$eix_accept_accept_keywords` applies to. Unset applies to all versions.
+
+Default value: `undef`
+
+##### <a name="-portage--install--webapp_config_accept_keywords"></a>`webapp_config_accept_keywords`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+accept_keywords entries (e.g. `~amd64`) for app-admin/webapp-config.
+
+Default value: `undef`
+
+##### <a name="-portage--install--webapp_config_use"></a>`webapp_config_use`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+USE flags for app-admin/webapp-config.
+
+Default value: `undef`
+
+##### <a name="-portage--install--webapp_config_accept_keywords_version"></a>`webapp_config_accept_keywords_version`
+
+Data type: `Optional[String]`
+
+Version `$webapp_config_accept_keywords` applies to. Unset applies to all versions.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eselect_accept_keywords"></a>`eselect_accept_keywords`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+accept_keywords entries (e.g. `~amd64`) for app-admin/eselect.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eselect_use"></a>`eselect_use`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+USE flags for app-admin/eselect.
+
+Default value: `undef`
+
+##### <a name="-portage--install--eselect_accept_keywords_version"></a>`eselect_accept_keywords_version`
+
+Data type: `Optional[String]`
+
+Version `$eselect_accept_keywords` applies to. Unset applies to all versions.
+
+Default value: `undef`
+
+##### <a name="-portage--install--portage_utils_accept_keywords"></a>`portage_utils_accept_keywords`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+accept_keywords entries (e.g. `~amd64`) for app-portage/portage-utils.
+
+Default value: `undef`
+
+##### <a name="-portage--install--portage_utils_use"></a>`portage_utils_use`
+
+Data type: `Optional[Array[Pattern[/\A\S+\z/]]]`
+
+USE flags for app-portage/portage-utils.
+
+Default value: `undef`
+
+##### <a name="-portage--install--portage_utils_accept_keywords_version"></a>`portage_utils_accept_keywords_version`
+
+Data type: `Optional[String]`
+
+Version `$portage_utils_accept_keywords` applies to. Unset applies to all versions.
+
+Default value: `undef`
 
 ### <a name="portage--params"></a>`portage::params`
 
