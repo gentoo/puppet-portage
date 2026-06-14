@@ -66,8 +66,14 @@ The default location of `make.conf` is `/etc/portage/make.conf`
 If you want to change it, you should do the following:
 
     class { 'portage':
+      manage_make_conf = true,
       make_conf = '/etc/make.conf',
     }
+
+Or using hiera (recommended):
+
+    portage::manage_make_conf: true
+    portage::make_conf: /etc/make.conf
 
 In order to add entries to `make.conf`:
 
@@ -147,14 +153,14 @@ The `webapp` type/provider can be used to manage webapps via `webapp-config`.
 
 This module can also handle the installation of various Gentoo tools.
 
-    class { 'portage':
-      portage_ensure => '2.2.6',
-      eix_ensure     => '0.29.4',
-      eix_keywords   => ['~amd64', '~x86'],
-    }
+    portage::install::eix_ensure: installed
+    portage::install::eselect_ensure: installed
+    portage::install::portage_ensure: installed
+    portage::install::portage_utils_ensure: installed
+    portage::install::webapp_config_ensure: absent
 
-See `manifests/init.pp` for all the available tools that can be defined.
-(It is recommended to use hiera in order to define the values)
+See `manifests/install.pp` and `data/common` for all the available tools that
+can be defined. (It is recommended to use hiera in order to define the values)
 
 See Also
 --------
@@ -174,3 +180,5 @@ Contributors
   * [Matthias Saou](https://github.com/thias)
   * [Garrett Honeycutt](http://learnpuppet.com)
   * [Robin Johnson](https://github.com/robbat2)
+  * [Anders Larsson](https://github.com/anders-larsson)
+  * [Evann Dreumont](https://github.com/LeGmask)
