@@ -1,4 +1,4 @@
-portage::make_conf_manage: false
+portage::manage_make_conf: false
 portage::make_conf: "/etc/portage/make.conf"
 portage::make_conf_remerge: true
 portage::emerge_command: "/usr/bin/emerge"

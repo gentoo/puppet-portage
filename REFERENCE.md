@@ -54,6 +54,8 @@ Data type: `Boolean`
 Whether this class should manage `/etc/portage/make.conf` as a `concat`
 resource. Additional fragments can be added separately via `portage::makeconf`.
 
+Default value: `false`
+
 ##### <a name="-portage--make_conf_remerge"></a>`make_conf_remerge`
 
 Data type: `Boolean`
