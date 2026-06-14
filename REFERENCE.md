@@ -13,7 +13,7 @@ webapp-config, eselect, and portage-utils).
 
 ### Defined types
 
-* [`portage::makeconf`](#portage--makeconf)
+* [`portage::makeconf`](#portage--makeconf): Manages a fragment of Gentoo's make.conf via concat.
 * [`portage::package`](#portage--package): = Define: portage::package  Configures and install portage backed packages  == Parameters  [*ensure*]  The ensure value of the package.  [*us
 * [`portage::postsync`](#portage--postsync): = Define: portage::postsync  Install custom postsync scripts  == Parameters  [*ensure*]  The ensure value for the scrypt  [*content*]  The co
 
@@ -457,7 +457,19 @@ This class does not need to be directly included.
 
 ### <a name="portage--makeconf"></a>`portage::makeconf`
 
-The portage::makeconf class.
+Define: portage::makeconf
+
+#### Examples
+
+##### manage MAKEOPTS
+
+```puppet
+portage::makeconf { 'makeopts':
+  ensure  => present,
+  content => '-j8',
+  order   => '10',
+}
+```
 
 #### Parameters
 
@@ -469,25 +481,25 @@ The following parameters are available in the `portage::makeconf` defined type:
 
 ##### <a name="-portage--makeconf--ensure"></a>`ensure`
 
-Data type: `Any`
+Data type: `Enum['present', 'absent']`
 
-
+Whether the fragment is `present` or `absent`.
 
 Default value: `present`
 
 ##### <a name="-portage--makeconf--content"></a>`content`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
-
+Content rendered into the fragment via `portage/makeconf.conf.erb`.
 
 Default value: `undef`
 
 ##### <a name="-portage--makeconf--order"></a>`order`
 
-Data type: `Any`
+Data type: `Optional[Variant[String, Integer]]`
 
-
+Ordering value passed to `concat::fragment`.
 
 Default value: `undef`
 

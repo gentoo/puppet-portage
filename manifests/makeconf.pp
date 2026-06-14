@@ -1,37 +1,32 @@
-# = Define: portage::makeconf
+# Define: portage::makeconf
 #
-# Adds sections to make.conf
+# @summary
+#   Manages a fragment of Gentoo's make.conf via concat.
 #
-# == Parameters
+# @example manage MAKEOPTS
+#   portage::makeconf { 'makeopts':
+#     ensure  => present,
+#     content => '-j8',
+#     order   => '10',
+#   }
 #
-# [*name*]
+# @param ensure
+#   Whether the fragment is `present` or `absent`.
 #
-# The name of the make.conf variable
+# @param content
+#   Content rendered into the fragment via `portage/makeconf.conf.erb`.
 #
-# [*content*]
+# @param order
+#   Ordering value passed to `concat::fragment`.
 #
-# The content of the configuration fragment. Must be of the form used
-# by concat::fragment.
-#
-# [*ensure*]
-#
-# The ensure state of the makeconf section.
-#
-# == Example
-#
-#     portage::makeconf { 'use':
-#       ensure  => present,
-#       content => '-X ldap ruby',
-#     }
-
 define portage::makeconf (
-  $ensure = present,
-  $content = undef,
-  $order   = undef,
+  Enum['present', 'absent'] $ensure = present,
+  Optional[String] $content = undef,
+  Optional[Variant[String, Integer]] $order = undef,
 ) {
   include portage
 
-  if($ensure == 'present') {
+  if($portage::manage_make_conf and $ensure == 'present') {
     concat::fragment { $name:
       content => template('portage/makeconf.conf.erb'),
       target  => $portage::make_conf,
