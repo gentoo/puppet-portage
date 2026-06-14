@@ -1,19 +1,36 @@
-require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint/tasks/puppet-lint'
-PuppetLint.configuration.send('disable_80chars')
-PuppetLint.configuration.send('disable_140chars')
-PuppetLint.configuration.relative = true
-PuppetLint.configuration.exclude_paths = []
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
-desc 'Validate manifests, templates, and ruby files'
-task :validate do
-  Dir['manifests/**/*.pp'].each do |manifest|
-    sh "puppet parser validate --noop #{manifest}"
-  end
-  Dir['spec/**/*.rb','lib/**/*.rb'].each do |ruby_file|
-    sh "ruby -c #{ruby_file}" unless ruby_file =~ /spec\/fixtures/
-  end
-  Dir['templates/**/*.erb'].each do |template|
-    sh "erb -P -x -T '-' #{template} | ruby -c"
+begin
+  require 'voxpupuli/test/rake'
+rescue LoadError
+  # only available if gem group test is installed
+end
+
+begin
+  require 'voxpupuli/acceptance/rake'
+rescue LoadError
+  # only available if gem group acceptance is installed
+end
+
+begin
+  require 'voxpupuli/release/rake_tasks'
+rescue LoadError
+  # only available if gem group releases is installed
+else
+  GCGConfig.user = 'legmask'
+  GCGConfig.project = 'puppet-portage'
+end
+
+desc "Run main 'test' task and report merged results to coveralls"
+task test_with_coveralls: [:test] do
+  if Dir.exist?(File.expand_path('../lib', __FILE__))
+    require 'coveralls/rake/task'
+    Coveralls::RakeTask.new
+    Rake::Task['coveralls:push'].invoke
+  else
+    puts 'Skipping reporting to coveralls.  Module has no lib dir'
   end
 end
+
+# vim: syntax=ruby

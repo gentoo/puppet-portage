@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Puppet::Util::Portage
   # Util methods for Portage types and providers.
   #
   # @see http://dev.gentoo.org/~zmedico/portage/doc/man/ebuild.5.html 'man 5 ebuild section DEPEND'
   # @see http://dev.gentoo.org/~ulm/pms/head/pms.html 'section 3'
 
-  extend self
+  module_function
 
   CATEGORY_PATTERN = '[\w+][\w+.-]*'
   NAME_PATTERN     = '[\w+][\w+-]*?'
@@ -84,17 +86,17 @@ module Puppet::Util::Portage
   # @return [Hash<Symbol, String>] The parsed values
   def parse_atom(atom)
     if (match = atom.match(BASE_ATOM_REGEX))
-      {:package => match[1]}
+      { package: match[1] }
     elsif (match = atom.match(VERSIONED_ATOM_REGEX))
-      {:compare => (match[1] || '='), :package => match[2], :version => match[3]}
+      { compare: match[1] || '=', package: match[2], version: match[3] }
     elsif (match = atom.match(WILDCARD_ATOM_REGEX))
-      {:compare => match[1], :package => match[2], :version => match[3]}
+      { compare: match[1], package: match[2], version: match[3] }
     elsif (match = atom.match(SLOTTED_ATOM_REGEX))
-      {:package => match[1], :slot => match[2]}
+      { package: match[1], slot: match[2] }
     elsif (match = atom.match(VERSIONED_SLOTTED_ATOM_REGEX))
-      {:compare => (match[1] || '='), :package => match[2], :version => match[3], :slot => match[4]}
+      { compare: match[1] || '=', package: match[2], version: match[3], slot: match[4] }
     elsif (match = atom.match(WILDCARD_SLOTTED_ATOM_REGEX))
-      {:compare => match[1], :package => match[2], :version => match[3], :slot => match[4]}
+      { compare: match[1], package: match[2], version: match[3], slot: match[4] }
     else
       raise AtomError, "#{atom} is not a valid atom"
     end
@@ -107,9 +109,9 @@ module Puppet::Util::Portage
     version_regex = Regexp.new "^#{COMPARE_PATTERN}?#{VERSION_PATTERN}$"
     wildcard_regex = Regexp.new "^(=?)#{WILDCARD_PATTERN}$"
     if (match = cmpver.match version_regex)
-      {:compare => match[1] || '=', :version => match[2]}
+      { compare: match[1] || '=', version: match[2] }
     elsif (match = cmpver.match wildcard_regex)
-      {:compare => match[1], :version => match[2]}
+      { compare: match[1], version: match[2] }
     else
       raise AtomError, "#{cmpver} is not a valid compare version"
     end
@@ -119,7 +121,7 @@ module Puppet::Util::Portage
   #
   # @return [String]
   def format_atom(hash)
-    str = ""
+    str = String.new
 
     if hash[:version]
       ver_hash = parse_cmpver(hash[:version])

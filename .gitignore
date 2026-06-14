@@ -1,34 +1,25 @@
-# Default .gitignore for Ruby
-*.gem
-*.rbc
-.bundle
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
-
-# Vim
-*.swp
-
-# Eclipse
-.project
-
-# OS X
-.DS_Store
-
-# Puppet
-coverage/
-spec/fixtures/manifests/*
-spec/fixtures/modules/*
-Gemfile.lock
+/pkg/
+/Gemfile.lock
+/Gemfile.local
+/vendor/
+/.vendor/
+/spec/fixtures/manifests/
+/spec/fixtures/modules/
+/.vagrant/
+/.bundle/
+/.ruby-version
+/coverage/
+/log/
+/.idea/
+/.dependencies/
+/.librarian/
+/Puppetfile.lock
+*.iml
+.*.sw?
+/.yardoc/
+/Guardfile
+bolt-debug.log
+.rerun.json

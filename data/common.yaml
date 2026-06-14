@@ -1,0 +1,10 @@
+portage::manage_make_conf: false
+portage::make_conf: "/etc/portage/make.conf"
+portage::make_conf_remerge: true
+portage::emerge_command: "/usr/bin/emerge"
+
+portage::install::eix_ensure: installed
+portage::install::eselect_ensure: installed
+portage::install::portage_ensure: installed
+portage::install::portage_utils_ensure: installed
+portage::install::webapp_config_ensure: absent

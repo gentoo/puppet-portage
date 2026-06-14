@@ -1,12 +1,13 @@
-# Common base class for gentoo package_* providers. It aggregates some of the
-# boilerplate that's shared between the providers.
-File.expand_path('..', File.dirname(__FILE__)).tap { |dir| $:.unshift(dir) unless $:.include?(dir) }
+# frozen_string_literal: true
+
 require 'puppet/util/portage'
 require 'puppet/provider/parsedfile'
-class Puppet::Provider::PortageFile < Puppet::Provider::ParsedFile
 
-  text_line :comment, :match => /^#/;
-  text_line :blank, :match => /^\s*$/;
+# Common base class for gentoo package_* providers. It aggregates some of the
+# boilerplate that's shared between the providers.
+class Puppet::Provider::PortageFile < Puppet::Provider::ParsedFile
+  text_line :comment, match: %r{^#}
+  text_line :blank, match: %r{^\s*$}
 
   def flush
     # Ensure the target directory exists before creating file
@@ -14,22 +15,20 @@ class Puppet::Provider::PortageFile < Puppet::Provider::ParsedFile
       Dir.mkdir(dir)
     end
     super
-    File.chmod(0644, target)
+    File.chmod(0o644, target)
   end
 
   def self.build_line(hash, sym = nil)
-    unless hash[:name] and hash[:name] != :absent
-      raise ArgumentError, "name is a required attribute of portagefile providers"
-    end
+    raise ArgumentError, 'name is a required attribute of portagefile providers' unless hash[:name] && (hash[:name] != :absent)
 
     str = Puppet::Util::Portage.format_atom(hash)
 
-    if !sym.nil? and hash.include? sym
-      if hash[sym].is_a? Array
-        str << " " << hash[sym].join(" ")
-      else
-        str << " " << hash[sym]
-      end
+    if !sym.nil? && hash.include?(sym)
+      str << ' ' << if hash[sym].is_a? Array
+                      hash[sym].join(' ')
+                    else
+                      hash[sym]
+                    end
     end
     str
   end
@@ -43,41 +42,33 @@ class Puppet::Provider::PortageFile < Puppet::Provider::ParsedFile
   def self.process_line(line, attribute = nil)
     hash = {}
 
-    if !attribute.nil? and (match = line.match /^(\S+)\s+(.*)\s*$/)
+    if !attribute.nil? && (match = line.match(%r{^(\S+)\s+(.*)\s*$}))
       # if we have a package and an array of attributes.
 
       components = Puppet::Util::Portage.parse_atom(match[1])
 
       # Try to parse version string
-      if components[:compare] and components[:version]
-        v = components[:compare] + components[:version]
-      end
+      v = components[:compare] + components[:version] if components[:compare] && components[:version]
 
       hash[:name]    = components[:package]
       hash[:version] = v
 
-      if components[:slot]
-        hash[:slot] = components[:slot].dup
-      end
+      hash[:slot] = components[:slot].dup if components[:slot]
 
-      attr_array = match[2].split(/\s+/)
+      attr_array = match[2].split(%r{\s+})
       hash[attribute] = attr_array
 
-    elsif (match = line.match /^(\S+)\s*/)
+    elsif (match = line.match(%r{^(\S+)\s*}))
       # just a package
       components = Puppet::Util::Portage.parse_atom(match[1])
 
       # Try to parse version string
-      if components[:compare] and components[:version]
-        v = components[:compare] + components[:version]
-      end
+      v = components[:compare] + components[:version] if components[:compare] && components[:version]
 
       hash[:name]    = components[:package]
       hash[:version] = v
 
-      if components[:slot]
-        hash[:slot] = components[:slot].dup
-      end
+      hash[:slot] = components[:slot].dup if components[:slot]
 
     else
       raise Puppet::Error, "Could not match '#{line}'"
@@ -93,6 +84,7 @@ class Puppet::Provider::PortageFile < Puppet::Provider::ParsedFile
   # @return [String]
   def self.to_line(hash)
     return super unless hash[:record_type] == :parsed
+
     build_line(hash)
   end
 end

@@ -1,44 +1,24 @@
-require 'rspec/collection_matchers'
+# frozen_string_literal: true
 
-dir = File.expand_path(File.join(File.dirname(__FILE__), ".."))
-$LOAD_PATH.unshift(dir, dir + 'lib', dir + '../lib')
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
-spec_libdir = File.expand_path('lib', File.dirname(__FILE__))
-$LOAD_PATH.unshift spec_libdir
-require 'puppet_integration'
+# puppetlabs_spec_helper will set up coverage if the env variable is set.
+# We want to do this if lib exists and it hasn't been explicitly set.
+ENV['COVERAGE'] ||= 'yes' if Dir.exist?(File.expand_path('../lib', __dir__))
 
-require 'mocha'
-require 'puppet'
+require 'voxpupuli/test/spec_helper'
 
-PROJECT_ROOT = File.expand_path('..', File.dirname(__FILE__))
-
-RSpec.configure do |config|
-  config.mock_with :mocha
-
-  # (portage-#38) specs fail when /etc/portage/package.use/* files cannot be
-  # chmodded. This isn't the best location for these stubs, but right now
-  # they're pretty tightly integrated into the portagefile provider. Since
-  # the portagefile provider is pretty universal across these specs, this will
-  # do for now.
-  config.before do
-    Dir.stubs(:mkdir)
-    File.stubs(:chmod)
-  end
+RSpec.configure do |c|
+  c.facterdb_string_keys = false
 end
 
-##
-# This method loads system atoms under /usr/portage in an array.
-#
-# This is useful for fuzzy testing the atom validation and writing new test
-# cases.
-#
-def system_atoms
-  atoms = []
+add_mocked_facts!
 
-  Dir.glob('/usr/portage/*/*').each do |dir|
-    next unless File.directory? dir
-    atoms << dir.split('/').slice(3,4).join('/')
+if File.exist?(File.join(__dir__, 'default_module_facts.yml'))
+  facts = YAML.safe_load(File.read(File.join(__dir__, 'default_module_facts.yml')))
+  facts&.each do |name, value|
+    add_custom_fact name.to_sym, value
   end
-
-  atoms
 end
+Dir['./spec/support/spec/**/*.rb'].sort.each { |f| require f }

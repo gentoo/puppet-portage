@@ -1,44 +1,36 @@
-# = Define: portage::postsync
+# Define: portage::postsync
 #
-# Install custom postsync scripts
+# @summary
+#   Installs a custom Portage postsync script.
 #
-# == Parameters
+# @example Install with inline content
+#   portage::postsync { 'system-bell':
+#     ensure  => present,
+#     content => "#!/bin/sh\necho -e \"\\a\"",
+#   }
 #
-# [*ensure*]
+# @example Install from a source file
+#   portage::postsync { 'update-eix':
+#     ensure => present,
+#     source => 'puppet:///modules/portage/postsync/update-eix.sh',
+#   }
 #
-# The ensure value for the scrypt
+# @param ensure
+#   Ensure value for `/etc/portage/postsync.d/${name}`.
 #
-# [*content*]
+# @param content
+#   Script content. Mutually exclusive with `$source`; exactly one required.
 #
-# The content of the script.
+# @param source
+#   Script source path. Mutually exclusive with `$content`; exactly one required.
 #
-# [*source*]
+# @see http://www.gentoo.org/doc/en/portage-utils.xml portage-utils
 #
-# The source path to the script
-#
-# == Example
-#
-#     portage::postsync { 'system-bell':
-#       ensure  => present,
-#       content => "#!/bin/sh\necho -e \"\\a\""
-#     }
-#
-#     portage::postsync { 'regen-layman-cache':
-#       ensure => present,
-#       source => 'puppet:///modules/site-files/regen-layman-cache.sh',
-#     }
-#
-# == See Also
-#
-# * portage-utils: http://www.gentoo.org/doc/en/portage-utils.xml
 define portage::postsync (
-  $ensure  = 'present',
-  $content = undef,
-  $source  = undef,
+  Enum['present', 'absent'] $ensure = 'present',
+  Optional[String] $content = undef,
+  Optional[String] $source = undef,
 ) {
-
-  include portage
-
   if ($content and $source) or (!$content and !$source) {
     fail('One (and only one) of [$content, $source] must be specified')
   }
@@ -51,5 +43,4 @@ define portage::postsync (
     group   => 'root',
     mode    => '0755',
   }
-
 }
